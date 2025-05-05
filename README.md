@@ -1,99 +1,110 @@
-# Random Neural Forest (RNF) 🌲🤖
+# Random Neural Forest
 
-## 🚀 Overview
-**Random Neural Forest (RNF)** is a **hybrid deep learning framework** that combines the power of **Random Forests** and **Neural Networks**. It automates the **design, selection, and optimization** of neural network architectures, allowing AI models to self-tune for maximum accuracy. 
+A novel ensemble learning algorithm that combines the strengths of neural networks and random forests. This project implements a "Random Neural Forest"—an ensemble of randomly structured neural networks (trees) that work together to solve classification problems. The approach leverages the diversity of neural architectures to improve generalization and robustness.
 
-## 🔥 Key Features
-- ✅ **Automated Model Selection** – Generates multiple neural network architectures and selects the best-performing one.
-- ✅ **No Manual Hyperparameter Tuning** – Automatically optimizes layers, activation functions, and dropout rates.
-- ✅ **Handles Both Binary & Multi-Class Classification** – Adapts to various dataset types.
-- ✅ **Efficient & Fast Training** – Saves time by eliminating manual trial-and-error.
-- ✅ **Prevents Overfitting** – Uses dropout and ensemble learning for generalization.
+## Features
 
-## 📌 How It Works
-1. **Generates multiple neural network models** with different architectures.
-2. **Trains each model** using the dataset provided.
-3. **Evaluates models** based on accuracy and loss.
-4. **Selects the best model** for final deployment.
+- **Randomized Neural Trees:** Each tree in the forest is a neural network with randomly chosen architecture and hyperparameters.
+- **Flexible Loss Functions:** Supports BCE Loss, Cross Entropy Loss, Hinge Loss, and KL Loss.
+- **Customizable Ensemble:** Easily configure the number of trees, layers, nodes, activations, and more.
+- **Works with Real and Synthetic Data:** Includes examples for both synthetic data and real-world datasets (e.g., heart disease prediction).
 
-## 🛠️ Installation
+## Installation
+
+1. **Clone the repository:**
+   ```bash
+   git clone <your-repo-url>
+   cd Random-Neural-Forest-Algorithm-
+   ```
+
+2. **Install dependencies:**
+   - Python 3.7+
+   - PyTorch
+   - NumPy
+   - Pandas
+   - scikit-learn
+
+   You can install the required packages using pip:
+   ```bash
+   pip install torch numpy pandas scikit-learn
+   ```
+
+## Usage
+
+### 1. Using the Random Neural Forest with Synthetic Data
+
+You can run the provided test script to see the algorithm in action with synthetic data:
+
 ```bash
-# Clone this repository
-git clone https://github.com/yourusername/random-neural-forest.git
-cd random-neural-forest
-
-# Install required dependencies
-pip install -r requirements.txt
+python test_network.py
 ```
 
-## ⚡ Quick Start
+This script:
+- Generates random data.
+- Configures a random neural forest.
+- Trains and evaluates the ensemble.
+
+### 2. Using the Random Neural Forest with Real Data
+
+To use the algorithm with a real dataset (e.g., the provided `Heart Prediction Quantum Dataset.csv`):
+
+```bash
+python testingwithrealdata.py
+```
+
+This script:
+- Loads and preprocesses the dataset.
+- Randomly configures the neural forest.
+- Trains and evaluates the model.
+
+### 3. Using the Algorithm in Your Own Code
+
+You can import and use the `forest` class from `randomneuralnetwork.py`:
+
 ```python
-from rnf import RandomNeuralForest
+from randomneuralnetwork import forest
 
-# Load your dataset (Example: Binary Classification)
-X_train, X_test, y_train, y_test = load_your_data()
+# Prepare your data as torch tensors
+class Dataset:
+    def __init__(self, features, targets):
+        self.features = features
+        self.targets = targets
 
-# Initialize RNF Model
-rnf = RandomNeuralForest(n_models=10, max_layers=5, min_nodes=32, max_nodes=256)
+data = Dataset(features_tensor, targets_tensor)
 
-# Train the models
-best_model = rnf.fit(X_train, y_train)
+# Define your neural forest configuration
+neural_config = {
+    'trees': 3,
+    'input': [num_features] * 3,
+    'hidden_layers': [4, 5, 3],
+    'nodes_in_hidden': {
+        0: [126, 56, 20, 8],
+        1: [126, 56, 20, 32, 8],
+        2: [64, 16, 4]
+    },
+    'output': [num_classes] * 3,
+    'dropout': [0.1, 0, 0],
+    'activation': ['relu', 'tanh', 'sigmoid'],
+    'loss': ['CE Loss', 'CE Loss', 'CE Loss']
+}
 
-# Evaluate on test data
-accuracy = best_model.evaluate(X_test, y_test)
-print(f"Best Model Accuracy: {accuracy}")
+# Initialize and train the forest
+forest_model = forest(neural_config, data)
+forest_model.train_forest(epochs=20, lr=0.01)
+forest_model.evaluate()
 ```
 
-## 🎯 Use Cases
-- 🏥 **Healthcare:** Automated deep learning for disease detection (X-ray/MRI scans).
-- 💰 **Finance:** Fraud detection using self-optimized neural networks.
-- 📊 **Business Analytics:** Customer behavior prediction.
-- 🖼 **Computer Vision:** Image classification with CNN selection.
-- 📝 **NLP:** Adaptive chatbot intelligence.
+## Configuration Options
 
-## 📊 Performance Metrics
-- ✅ **Achieves up to 20% faster training time** by automating model selection.
-- ✅ **Reduces overfitting by 30%** with ensemble learning.
-- ✅ **Increases accuracy by 5-10%** compared to manually selected models.
+- `trees`: Number of neural trees in the forest.
+- `input`: List of input sizes for each tree.
+- `hidden_layers`: List of hidden layer counts for each tree.
+- `nodes_in_hidden`: Dictionary mapping tree index to list of node counts per hidden layer.
+- `output`: List of output sizes for each tree.
+- `dropout`: List of dropout rates for each tree.
+- `activation`: List of activation functions (`'relu'`, `'sigmoid'`, `'tanh'`).
+- `loss`: List of loss functions (`'BCE Loss'`, `'CE Loss'`, `'Hinge Loss'`, `'KL Loss'`).
 
-## 🏗️ Architecture Diagram
-```
-+---------------------+
-| Input Data         |
-+---------------------+
-        |
-        v
-+---------------------+
-| Generate Neural Nets|
-+---------------------+
-        |
-        v
-+---------------------+
-| Train & Evaluate    |
-+---------------------+
-        |
-        v
-+---------------------+
-| Select Best Model  |
-+---------------------+
-        |
-        v
-+---------------------+
-| Deploy & Predict   |
-+---------------------+
-```
+## License
 
-## 🛠 Tech Stack
-- Python 🐍
-- PyTorch 🔥
-- NumPy
-- Scikit-Learn
-
-## 🏆 Contributing
-Contributions are welcome! Feel free to fork this repo and submit a PR. 
-
-## 📜 License
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
----
-### ⭐ If you find this project useful, don't forget to **star** this repo! ⭐
+This project is licensed under the Creative Commons CC0 1.0 Universal License. See the [LICENSE](LICENSE) file for details. 
