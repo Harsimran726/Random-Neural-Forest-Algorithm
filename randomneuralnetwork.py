@@ -1,8 +1,15 @@
 import torch
 import torch.nn as nn
 import math 
-import random 
+import numpy as np
+import random
 
+seed = 42
+torch.manual_seed(seed)
+np.random.seed(seed)
+random.seed(seed)
+torch.backends.cudnn.deterministic = True
+torch.backends.cudnn.benchmark = False
 
 
 '''
@@ -108,7 +115,7 @@ class forest():
         }
         return [loss_map[loss] for loss in loss_types]
     
-    def train_forest(self, epochs=20, lr=0.01):
+    def train_forest(self, epochs=10, lr=0.001):
         print("In train_forest")
         for epoch in range(epochs):
             total_loss = 0
@@ -120,6 +127,7 @@ class forest():
                 
                 # Forward pass
                 outputs = tree(self.network.train_data.features)
+                # print("Shape of Outputs :- ",outputs.shape)
                 # print("Here is the before output of i ",i,"output ",outputs[:10],"size of outputs ",outputs.shape)
                 
                 # Handle different loss functions
@@ -155,7 +163,7 @@ class forest():
                 total_loss += loss.item()
                 
                 # Print progress
-                if (epoch + 1) % 5 == 0:
+                if (epoch + 1) % 1 == 0:
                     print(f'Epoch [{epoch+1}/{epochs}], Tree {i+1}, Loss: {loss.item():.4f}')
             
             # Average loss for all trees
