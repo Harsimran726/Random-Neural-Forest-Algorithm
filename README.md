@@ -13,7 +13,7 @@ A novel ensemble learning algorithm that combines the strengths of neural networ
 
 1. **Clone the repository:**
    ```bash
-   git clone <your-repo-url>
+   git clone Random-Neural-Forest-Algorithm
    cd Random-Neural-Forest-Algorithm-
    ```
 
@@ -74,19 +74,19 @@ data = Dataset(features_tensor, targets_tensor)
 
 # Define your neural forest configuration
 neural_config = {
-    'trees': 3,
-    'input': [num_features] * 3,
-    'hidden_layers': [4, 5, 3],
-    'nodes_in_hidden': {
-        0: [126, 56, 20, 8],
-        1: [126, 56, 20, 32, 8],
-        2: [64, 16, 4]
-    },
-    'output': [num_classes] * 3,
-    'dropout': [0.1, 0, 0],
-    'activation': ['relu', 'tanh', 'sigmoid'],
-    'loss': ['CE Loss', 'CE Loss', 'CE Loss']
-}
+        'trees': n_trees,
+        'input': [6] * n_trees,
+        'hidden_layers': [random.choice(layer_options) for _ in range(n_trees)],
+        'nodes_in_hidden': {
+            i: [max(4, random.choice(node_base) // (2**j)) 
+                for j in range(random.choice(layer_options))]
+            for i in range(n_trees)
+        },
+        'output': [2] * n_trees,
+        'dropout': [random.choice(dropout_options) for _ in range(n_trees)],
+        'activation': [random.choice(activations) for _ in range(n_trees)],
+        'loss': ['BCE Loss'] * n_trees
+    }
 
 # Initialize and train the forest
 forest_model = forest(neural_config, data)
